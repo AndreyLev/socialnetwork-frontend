@@ -150,9 +150,9 @@ export default class MainPage {
   drawNewPostsButton() {
 
       const newPostsButtonEl = document.createElement('div');
-      newPostsButtonEl.className = 'col-12';
+      newPostsButtonEl.className = 'col-13';
       newPostsButtonEl.innerHTML = `
-        <button type="button" data-action="new-posts" class="btn btn-secondary" data-dismiss="modal">Показать новые посты ${this.newPostsQuantity}</button>     
+        <button type="button" data-action="new-posts" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Показать новые посты ${this.newPostsQuantity}</button>     
       `;
 
       newPostsButtonEl.querySelector('[data-action=new-posts]').addEventListener('click', evt => {
