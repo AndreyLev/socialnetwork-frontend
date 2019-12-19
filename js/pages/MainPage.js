@@ -14,7 +14,7 @@ export default class MainPage {
       this._rootEl.innerHTML = `
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Network</a>
+          <a class="navbar-brand" href="#">Социальная сеть</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-supported-content">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -22,15 +22,12 @@ export default class MainPage {
           <div class="collapse navbar-collapse" id="navbar-supported-content">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" data-id="menu-main" href="/">NewsFeed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-id="menu-messages" href="/messages">Messages</a>
+                <a class="nav-link" data-id="menu-main" href="/">Новостная лента</a>
               </li>
             </ul>
             <form data-id="search-form" class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <input class="form-control mr-sm-2" type="search" placeholder="Искать...">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
             </form>
           </div>
         </nav>
@@ -41,29 +38,29 @@ export default class MainPage {
                   <form data-id="post-edit-form">
                     <input type="hidden" data-id="id-input" value="0">
                     <div class="form-group">
-                      <label for="content-input">Content</label>
+                      <label for="content-input">Текст</label>
                       <input type="text" data-id="content-input" class="form-control" id="content-input">
                     </div>
                     <div class="form-group">
                       <div class="custom-file">
                         <input type="hidden" data-id="media-name-input">
                         <input type="file" data-id="media-input" class="custom-file-input" id="media-input">
-                        <label class="custom-file-label" for="media-input">Choose file</label>
+                        <label class="custom-file-label" for="media-input">Выбрать файл</label>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Сделать пост</button>
                   </form>
                 </div>
               </div>
             </div>
         </div>
-        <div class="row" data-id="new-posts">
+        <div class="container" data-id="new-posts">
         </div>
         </div>
-        <div class="row" data-id="posts-container">
+        <div class="container" data-id="posts-container">
         </div>
          </div>
-        <div class="row" data-id="next-posts-button">
+        <div class="container" data-id="next-posts-button">
         </div>
     
       </div>
@@ -90,10 +87,7 @@ export default class MainPage {
       this._rootEl.querySelector('[data-id=menu-main]').addEventListener('click', evt => {
           evt.preventDefault();
       });
-      this._rootEl.querySelector('[data-id=menu-messages]').addEventListener('click', evt => {
-          evt.preventDefault();
-          this._context.route(evt.currentTarget.getAttribute('href'));
-      });
+
 
       this._errorModal = $('[data-id=error-modal]'); // jquery
       this._errorMessageEl = this._rootEl.querySelector('[data-id=error-message]');
@@ -149,15 +143,47 @@ export default class MainPage {
       this.loadLastFivePosts();
       //this.drawNewPostQuantityButton();
      // this.drawNewPostQuantityButton();
-      this.pollNewPosts();
+         this.pollNewPosts();
   }
 
 
+  drawNewPostsButton() {
+
+      const newPostsButtonEl = document.createElement('div');
+      newPostsButtonEl.className = 'col-12';
+      newPostsButtonEl.innerHTML = `
+        <button type="button" data-action="new-posts" class="btn btn-secondary" data-dismiss="modal">Показать новые посты ${this.newPostsQuantity}</button>     
+      `;
+
+      newPostsButtonEl.querySelector('[data-action=new-posts]').addEventListener('click', evt => {
+          this._newPostsEl.innerHTML = '';
+          this._context.post(`/posts/${this.firstElementId}/${this.lastElementId}/drawnposts`, null, {},
+              text => {
+              const drawnPosts = JSON.parse(text);
+                  this._context.post(`/posts/${this.firstElementId}/newposts`, null, {},
+                      text => {
+                          const newPosts = JSON.parse(text);
+                          const postsToShow = newPosts.concat(drawnPosts);
+                          this.newPostsQuantity = 0;
+                          this.rebuildList(postsToShow);
+                      }, error => {
+                          this.showError(error)
+                      });
+              }, error => {
+                  this.showError(error);
+              });
+
+      });
+
+      this._newPostsEl.appendChild(newPostsButtonEl);
+  }
+
   drawNextPostsButton(posts) {
+      this._nextPostsButton.innerHTML = '';
       const nextPostsButtonEl = document.createElement('div');
-      nextPostsButtonEl.className = 'col-12';
+      nextPostsButtonEl.className = 'col-13';
       nextPostsButtonEl.innerHTML = ` 
-      <button type="button" data-action="next-posts" class="btn btn-secondary" data-dismiss="modal">Show more</button>
+      <button type="button" data-action="next-posts" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Показать ещё</button>
       `;
 
       nextPostsButtonEl.querySelector('[data-action=next-posts]').addEventListener('click', evt => {
@@ -191,12 +217,14 @@ export default class MainPage {
   drawNewPostQuantityButton() {
       this._newPostsEl.innerHTML = '';
       const newPostsButtonEl = document.createElement('div');
-      newPostsButtonEl.className = 'col-12';
+      newPostsButtonEl.className = 'col-13';
       newPostsButtonEl.innerHTML = `
-        <div class="container col text-center" style="margin-top: 10px">
-                <p style="min-width: 100%">New posts : ${this.newPostsQuantity}</p>      
-            </div>
+        <button type="button" data-action="new-posts" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Show new posts ${this.newPostsQuantity}</button>
       `;
+
+      newPostsButtonEl.querySelector('[data-action=new-posts]').addEventListener('click', evt => {
+
+      });
 
       this._newPostsEl.appendChild(newPostsButtonEl);
   }
@@ -235,7 +263,7 @@ export default class MainPage {
       // alert('DRAWING POSTS');
       for (const post of posts) {
           const postEl = document.createElement('div');
-          postEl.className = 'col-4';
+          postEl.className = 'col-13';
 
           let postMedia = '';
           if (post.media !== null) {
@@ -252,7 +280,7 @@ export default class MainPage {
               } else if (post.media.endsWith('.mp3')) {
                   postMedia = `
             <div class = "card-img-topcard-img-top embed-responsive embed-responsive-16by9 mb-2">
-              <audio src = "${item.value}" class = "embed-responsive-item" controls>
+              <audio src = "${this._context.mediaUrl()}/${post.media}" class = "embed-responsive-item" controls>
             </div>
           `;
               }
@@ -260,10 +288,13 @@ export default class MainPage {
 
           postEl.innerHTML = `
         <div class="card mt-2">
-          ${postMedia}
           <div class="card-body">
+            <p class="card-text">Пост написал : ${post.authorName}</p>
+            <hr class="style-1">
             <p class="card-text">${post.content}</p>
-            <p class="card-text">Likes: ${post.likes}</p>
+            <div class="col-6">${postMedia}</div>
+            <hr class="style-1">
+            <p class="card-text">Рейтинг поста: ${post.likes}</p>
           </div>
           <div class="card-footer">
             <div class="row">
@@ -333,7 +364,9 @@ export default class MainPage {
       this._timeout = setTimeout(() => {
           this.getNewPostsQuantity();
           if (this.newPostsQuantity > 0) {
-              this.drawNewPostQuantityButton();
+              this._newPostsEl.innerHTML = '';
+              this.drawNewPostsButton();
+
           } else if (this.newPostsQuantity === 0) {
               this._newPostsEl.innerHTML = '';
           }

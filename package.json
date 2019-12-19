@@ -10,6 +10,9 @@
   "scripts": {
     "start": "live-server --entry-file=index.html"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AndreyLev/socialnetwork-frontend.git"
