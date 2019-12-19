@@ -92,7 +92,7 @@ router.register('/', MainPage);
 router.register('/messages', MessagesPage);
 
 const [backendUrl, websocketUrl] = ['localhost', '127.0.0.1'].includes(window.location.hostname) ?
-  ['http://localhost:9999', 'ws://localhost:9999/ws'] : ['https://socialnetwork-boot-frontend.herokuapp.com', 'wss://socialnetwork-boot-frontend.herokuapp.com/ws'];
+  ['http://localhost:9999', 'ws://localhost:9999/ws'] : ['https://socialnetwork-boot.herokuapp.com', 'wss://socialnetwork-boot.herokuapp.com/ws'];
 
 const api = new Api(`${backendUrl}/api`);
 new Context(document.getElementById('root'), api, router, translator, backendUrl, websocketUrl);
