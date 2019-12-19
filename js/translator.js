@@ -58,7 +58,7 @@ const translations = {
     'name':'Name',
     'password':'Password',
     'email':'Email',
-    'content':'Content',
+    'content':'Post text',
     'username':'Login'
   }
 };
