@@ -299,12 +299,12 @@ export default class MainPage {
           <div class="card-footer">
             <div class="row">
               <div class="col">
-                <a href="#" data-action="like" class="btn btn-sm btn-primary">Like</a>
-                <a href="#" data-action="dislike" class="btn btn-sm btn-danger">Dislike</a>
+                <a href="#" data-action="like" class="btn btn-sm btn-primary">Поставить лайк</a>
+                <a href="#" data-action="dislike" class="btn btn-sm btn-danger">Поставить дизлайн</a>
               </div>
               <div class="col text-right">
-                <a href="#" data-action="edit" class="btn btn-sm btn-primary">Edit</a>
-                <a href="#" data-action="remove" class="btn btn-sm btn-danger">Remove</a>
+                <a href="#" data-action="edit" class="btn btn-sm btn-primary">Редактировать</a>
+                <a href="#" data-action="remove" class="btn btn-sm btn-danger">Удалить</a>
               </div>
             </div>
           </div>
