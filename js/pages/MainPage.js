@@ -25,10 +25,6 @@ export default class MainPage {
                 <a class="nav-link" data-id="menu-main" href="/">Новостная лента</a>
               </li>
             </ul>
-            <form data-id="search-form" class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Искать...">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
-            </form>
           </div>
         </nav>
         <div class="row">
@@ -64,12 +60,11 @@ export default class MainPage {
         </div>
     
       </div>
-      <!-- TODO: https://getbootstrap.com/docs/4.4/components/modal/ -->
       <div class="modal fade" data-id="error-modal" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Error!</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Ошибка</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -77,7 +72,7 @@ export default class MainPage {
             <div data-id="error-message" class="modal-body">
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
             </div>
           </div>
         </div>
@@ -101,11 +96,12 @@ export default class MainPage {
       this._mediaNameInputEl = this._postCreateFormEl.querySelector('[data-id=media-name-input]');
       this._mediaInputEl = this._postCreateFormEl.querySelector('[data-id=media-input]');
 
+
+
       this._mediaInputEl.addEventListener('change', evt => {
-          // evt.currentTarget -> тот, чей обработчик события сейчас выполняется
-          // File -> Blob
+
           const [file] = Array.from(evt.currentTarget.files);
-          // FormData -> сам выставит нужные заголовки и закодирует тело запроса
+
           const formData = new FormData();
           formData.append('file', file);
           this._context.post('/files/multipart', formData, {},
@@ -119,7 +115,7 @@ export default class MainPage {
       });
       this._postCreateFormEl.addEventListener('submit', evt => {
           evt.preventDefault();
-          //alert('HA! YOU CLICK ON THE BUTTON');
+
           const data = {
               id: Number(this._idInputEl.value),
               content: this._contentInputEl.value,
@@ -141,8 +137,7 @@ export default class MainPage {
       });
 
       this.loadLastFivePosts();
-      //this.drawNewPostQuantityButton();
-     // this.drawNewPostQuantityButton();
+
          this.pollNewPosts();
   }
 
@@ -205,9 +200,9 @@ export default class MainPage {
     this._context.get(`/posts/${this.firstElementId}/newPosts`, {},
         text => {
             const posts = JSON.parse(text);
-            //alert(posts);
+
             this.newPostsQuantity = posts;
-            //alert(this.newPostsQuantity);
+
         },
         error => {
             this.showError(error);
@@ -260,7 +255,7 @@ export default class MainPage {
 
 
       this._postsContainerEl.innerHTML = '';
-      // alert('DRAWING POSTS');
+
       for (const post of posts) {
           const postEl = document.createElement('div');
           postEl.className = 'col-13';
@@ -355,7 +350,7 @@ export default class MainPage {
 
   writeMessageAboutNewPosts(posts) {
     this._timeout = setTimeout(() => {
-      //alert(posts.length);
+
 
     }, 5000)
   }

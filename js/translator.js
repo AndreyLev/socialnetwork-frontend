@@ -39,7 +39,7 @@ const translations = {
     'password':'Пароль',
     'email':'Почта',
     'content':'Текст поста',
-    'username':'Логин'
+    'username':'Логин',
   },
   en: {
     'error.network': 'Network error',
@@ -59,7 +59,7 @@ const translations = {
     'password':'Password',
     'email':'Email',
     'content':'Post text',
-    'username':'Login'
+    'username':'Login',
   }
 };
 
